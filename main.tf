@@ -80,6 +80,10 @@ resource "kubernetes_daemonset" "this" {
         restart_policy                   = "Always"
         termination_grace_period_seconds = 30
 
+        toleration {
+          operator = "Exists"
+        }
+
         container {
           name              = "node-exporter"
           image             = "${var.image_name}:${var.image_version}"
