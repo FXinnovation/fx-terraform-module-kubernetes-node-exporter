@@ -24,11 +24,14 @@ Terraform module to deploy the Prometheus node-exporter.
 | image\_version | Tag of the docker image to use. | `string` | `"v0.18.0"` | no |
 | labels | Additionnal labels that will be merged on all resources. | `map` | `{}` | no |
 | namespace | Namespace in which the module will be deployed. | `string` | `"kube-system"` | no |
+| prometheus\_alert\_groups\_rules\_annotations | Map of strings that will be merge on all prometheus alert groups rules annotations. | `map` | `{}` | no |
+| prometheus\_alert\_groups\_rules\_labels | Map of strings that will be merge on all prometheus alert groups rules labels. | `map` | `{}` | no |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | daemonset\_name | Name of the daemonset created by the module. |
+| prometheus\_alert\_groups | List of object representing prometheus alert groups you can import in prometheus to alert you in case of problems. |
 
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

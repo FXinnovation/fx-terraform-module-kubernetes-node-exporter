@@ -11,6 +11,51 @@ locals {
     "app.kubernetes.io/name"       = "node-exporter"
   }
   port = 9100
+  prometheus_alert_groups = [
+    {
+      "name" = "node-exporter"
+      "rules" = [
+        {
+          "alert" = "NodeCollectorScrapeErrors"
+          "expr"  = "node_scrape_collector_success < 1"
+          "for"   = "1m"
+          "labels" = merge(
+            {
+              "severity" = "critical"
+              "urgency"  = "2"
+            },
+            var.prometheus_alert_groups_rules_labels
+          )
+          "annotations" = merge(
+            {
+              "summary"     = "Node Exporter - Scrape Error on {{ $labels.instance }}",
+              "description" = "Cloudwatch Exporter:\n {{ $labels.instance }} has a scrape error on {{ labels.collector}} collector.\nLabels:\n{{ $labels }}"
+            },
+            var.prometheus_alert_groups_rules_annotations
+          )
+        },
+        {
+          "alert" = "NodeCollectorScrapeDurationError"
+          "expr"  = "deriv(node_scrape_collector_duration_seconds[2m]) > 0.2 and node_scrape_collector_duration_seconds > 10"
+          "for"   = "5m"
+          "labels" = merge(
+            {
+              "severity" = "warning"
+              "urgency"  = "3"
+            },
+            var.prometheus_alert_groups_rules_labels
+          )
+          "annotations" = merge(
+            {
+              "summary"     = "Node Exporter - Scrape Duration Error on {{ $labels.instance }}",
+              "description" = "Node Exporter:\n {{ $labels.instance }} scrape duration is too high for the {{ $labels.collector }} collector.\nLabels:\n{{ $labels }}"
+            },
+            var.prometheus_alert_groups_rules_annotations
+          )
+        }
+      ]
+    }
+  ]
 }
 
 #####
