@@ -33,6 +33,8 @@ Terraform module to deploy the Prometheus node-exporter.
 | labels | Additionnal labels that will be merged on all resources. | `map` | `{}` | no |
 | namespace | Namespace in which the module will be deployed. | `string` | `"kube-system"` | no |
 | port | Node port on which the node-exporter will be listening on. | `number` | `9100` | no |
+| prometheus\_alert\_groups\_rules\_annotations | Map of strings that will be merge on all prometheus alert groups rules annotations. | `map` | `{}` | no |
+| prometheus\_alert\_groups\_rules\_labels | Map of strings that will be merge on all prometheus alert groups rules labels. | `map` | `{}` | no |
 
 ## Outputs
 

@@ -10,9 +10,50 @@ locals {
     "managed-by" = "terraform"
     "name"       = "node-exporter"
   }
-  port                    = 9100
-  grafana_dashboards      = []
-  prometheus_alert_groups = []
+  port               = 9100
+  grafana_dashboards = []
+  prometheus_alert_groups_rules_labels = merge(
+    {
+      "source" = "https://scm.dazzlingwrench.fxinnovation.com/fxinnovation-public/terraform-module-kubernetes-node-exporter"
+    },
+    var.prometheus_alert_groups_rules_labels
+  )
+  prometheus_alert_groups_rules_annotations = merge(
+    {},
+    var.prometheus_alert_groups_rules_annotations
+  )
+  prometheus_alert_groups = [
+    {
+      "name" = "node-exporter"
+      "rules" = [
+        {
+          "alert" = "node-exporter - scrape collector failed"
+          "expr"  = "node_scrape_collector_success < 1"
+          "for"   = "2m"
+          "labels" = merge(
+            {
+              "severity" = "critical"
+              "urgency"  = "2"
+            },
+            local.prometheus_alert_groups_rules_labels
+          )
+          "annotations" = merge(
+            {
+              "summary"              = "Node Exporter - Scraping failed on a collector"
+              "description"          = "Node Exporter:\nScraping failed for collector {{ $labels.collector }} on {{ $labels.instance }}.\nLabels:\n{{ $labels }}"
+              "description_html"     = "<h3>Node Exporter</h3><p>Scraping failed for collector {{ $labels.collector }} on {{ $labels.instance }}.</p><h4>Labels</h4><p>{{ $labels }}</p>"
+              "description_markdown" = "### Node Exporter:\nScraping failed for collector {{ $labels.collector }} on {{ $labels.instance }}.\n#### Labels:\n{{ $labels }}"
+            },
+            local.prometheus_alert_groups_rules_annotations
+          )
+        }
+      ]
+    },
+    {
+      "name"  = "node"
+      "rules" = []
+    }
+  ]
 }
 
 #####
