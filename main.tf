@@ -4,11 +4,11 @@
 
 locals {
   labels = {
-    "app.kubernetes.io/version"    = var.image_version
-    "app.kubernetes.io/component"  = "exporter"
-    "app.kubernetes.io/part-of"    = "monitoring"
-    "app.kubernetes.io/managed-by" = "terraform"
-    "app.kubernetes.io/name"       = "node-exporter"
+    "version"    = var.image_version
+    "component"  = "exporter"
+    "part-of"    = "monitoring"
+    "managed-by" = "terraform"
+    "name"       = "node-exporter"
   }
   port = 9100
 }
@@ -40,7 +40,7 @@ resource "kubernetes_daemonset" "this" {
     )
     labels = merge(
       {
-        "app.kubernetes.io/instance" = var.daemonset_name
+        instance = var.daemonset_name
       },
       local.labels,
       var.labels,
@@ -51,8 +51,7 @@ resource "kubernetes_daemonset" "this" {
   spec {
     selector {
       match_labels = {
-        app    = "node-exporter"
-        random = random_string.selector.result
+        selector = "node-exporter-${random_string.selector.result}"
       }
     }
 
@@ -64,9 +63,8 @@ resource "kubernetes_daemonset" "this" {
         )
         labels = merge(
           {
-            "app.kubernetes.io/instance" = var.daemonset_name
-            app                          = "node-exporter"
-            random                       = random_string.selector.result
+            instance = var.daemonset_name
+            selector = "node-exporter-${random_string.selector.result}"
           },
           local.labels,
           var.labels,
@@ -96,8 +94,8 @@ resource "kubernetes_daemonset" "this" {
 
           port {
             container_port = local.port
-            host_port      = local.port
-            name           = "metrics"
+            host_port      = var.port
+            name           = "http"
             protocol       = "TCP"
           }
 

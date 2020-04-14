@@ -23,6 +23,15 @@ variable "namespace" {
 }
 
 #####
+# Application
+#####
+
+variable "port" {
+  description = "Node port on which the node-exporter will be listening on."
+  default = 9100
+}
+
+#####
 # Deployment
 #####
 
