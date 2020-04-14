@@ -10,8 +10,8 @@ locals {
     "managed-by" = "terraform"
     "name"       = "node-exporter"
   }
-  port = 9100
-  grafana_dashboards = []
+  port                    = 9100
+  grafana_dashboards      = []
   prometheus_alert_groups = []
 }
 

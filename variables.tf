@@ -28,7 +28,7 @@ variable "namespace" {
 
 variable "port" {
   description = "Node port on which the node-exporter will be listening on."
-  default = 9100
+  default     = 9100
 }
 
 #####
