@@ -23,6 +23,7 @@ withCredentials(
     ],
     inspecTarget:         'azure',
     inspecSubscriptionId: 'e469a261-e6fc-4363-94f1-3d8cdb259ec7',
-    inspecTenantId:       '219647b6-1ea6-409d-b9cc-0893cb535884'
+    inspecTenantId:       '219647b6-1ea6-409d-b9cc-0893cb535884',
+    runKind: true
   )
 }
