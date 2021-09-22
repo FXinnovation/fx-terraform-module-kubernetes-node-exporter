@@ -28,12 +28,6 @@ resource "kubernetes_namespace" "default" {
   }
 }
 
-resource "kubernetes_namespace" "disabled" {
-  metadata {
-    name = random_string.disabled.result
-  }
-}
-
 #####
 # default example
 #####
