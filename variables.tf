@@ -22,6 +22,7 @@ variable "namespace" {
   default     = "kube-system"
 }
 
+
 #####
 # Deployment
 #####
